@@ -7,13 +7,14 @@
 
 const Deck = require("../models/Deck");
 const User = require("../models/User");
+const Post = require("../models/Post")
 
 const { JWT_SECRET } = require('../configs')
 const JWT = require('jsonwebtoken')
 
 const encodedToken = (userID) => {
   return JWT.sign({
-    iss: 'Tran Toan',
+    iss: 'Le Anh Huy',
     sub: userID,
     iat: new Date().getTime(),
     exp: new Date().setDate(new Date().getDate() + 3)
@@ -37,6 +38,15 @@ const getUserDecks = async (req, res, next) => {
   return res.status(200).json({ decks: user.decks });
 };
 
+const getUserPosts = async (req, res, next) => {
+  const { userID } = req.value.params;
+
+  // Get user
+  const user = await User.findById(userID).populate("posts");
+
+  return res.status(200).json({ posts: user.posts });
+};
+
 const index = async (req, res, next) => {
   const users = await User.find({});
 
@@ -56,23 +66,49 @@ const newUserDeck = async (req, res, next) => {
 
   // Create a new deck
   const newDeck = new Deck(req.value.body);
-
+  
   // Get user
   const user = await User.findById(userID);
-
+ 
   // Assign user as a deck's owner
   newDeck.owner = user;
-
+  // console.log(newDeck.owner)
+  console.log(newDeck)
   // Save the deck
   await newDeck.save();
-
+  
   // Add deck to user's decks array 'decks'
   user.decks.push(newDeck._id);
 
   // Save the user
   await user.save();
-
+  
   res.status(201).json({ deck: newDeck });
+};
+
+const newUserPost = async (req, res, next) => {
+  const { userID } = req.value.params;
+
+  // Create a new deck
+  const newPost = new Post(req.value.body);
+  
+  // Get user
+  const user = await User.findById(userID);
+ 
+  // Assign user as a deck's owner
+  newPost.owner = user;
+  // console.log(newPost.owner)
+  console.log(newPost)
+  // Save the deck
+  await newPost.save();
+  
+  // Add deck to user's decks array 'decks'
+  user.posts.push(newPost._id);
+
+  // Save the user
+  await user.save();
+  
+  res.status(201).json({ deck: newPost });
 };
 
 const replaceUser = async (req, res, next) => {
@@ -88,20 +124,13 @@ const replaceUser = async (req, res, next) => {
 
 const secret = async (req, res, next) => {
   console.log("Called to secret function.");
+  return res.status(200).json({ resources: true })
 };
 
 const signIn = async (req, res, next) => {
-  console.log("Called to signIn function.");
-  const {  email, password } = req.value.body
-
-  const foundUser = await User.findOne({ email })
-
-  if (!foundUser) return res.status(403).json({ error: { message: 'email does not exist.' }})
-  // console.log(foundUser.password != password)
-  // check password
-  if (foundUser.password != password) return res.status(403).json({ error: { message: 'password does not correct.' }})
   // Encode a token
-  const token = encodedToken(newUser._id)
+  console.log('req: ', req.user)
+  const token = encodedToken(req.user._id)
 
   res.setHeader('Authorization', token)
   return res.status(201).json({ success: true })
@@ -116,7 +145,7 @@ const signUp = async (req, res, next) => {
 
   // Create a new user
   const newUser = new User({ firstName, lastName, email, password })
-  newUser.save()
+  newUser.save() 
 
   // Encode a token
   const token = encodedToken(newUser._id)
@@ -147,4 +176,6 @@ module.exports = {
   signIn,
   signUp,
   updateUser,
+  newUserPost,
+  getUserPosts
 };

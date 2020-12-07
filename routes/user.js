@@ -6,15 +6,18 @@ const UserController = require('../controllers/user')
 
 const { validateBody, validateParam, schemas } = require('../helpers/routerHelpers')
 
+const passport = require('passport')
+const passportConfig = require('../middlewares/passport')
+
 router.route('/')
     .get(UserController.index)
     .post(validateBody(schemas.userSchema), UserController.newUser)
 
 router.route('/signup').post(validateBody(schemas.authSignUpSchema), UserController.signUp)
 
-router.route('/signin').post(validateBody(schemas.authSignInSchema), UserController.signIn)
+router.route('/signin').post(validateBody(schemas.authSignInSchema), passport.authenticate('local', {session: false}), UserController.signIn)
 
-router.route('/secret').get(UserController.secret)
+router.route('/secret').get(passport.authenticate('jwt', { session: false}), UserController.secret)
 
 router.route('/:userID')
     .get(validateParam(schemas.idSchema, 'userID'), UserController.getUser)
@@ -24,5 +27,9 @@ router.route('/:userID')
 router.route('/:userID/decks')
     .get(validateParam(schemas.idSchema, 'userID'), UserController.getUserDecks)
     .post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.deckSchema), UserController.newUserDeck)
+
+router.route('/:userID/posts')
+.get(validateParam(schemas.idSchema, 'userID'), UserController.getUserPosts)
+.post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.postSchema), UserController.newUserPost)
 
 module.exports = router

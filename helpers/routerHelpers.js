@@ -50,6 +50,11 @@ const schemas = {
         description: Joi.string().min(10).required()
     }),
 
+    postSchema: Joi.object().keys({
+        image: Joi.string().required(),
+        description: Joi.string().required()
+    }),
+
     deckOptionalSchema: Joi.object().keys({
         name: Joi.string().min(6),
         description: Joi.string().min(10),
@@ -65,6 +70,12 @@ const schemas = {
         description: Joi.string().min(10).required(),
         owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
     }),
+
+    newPostSchema: Joi.object().keys({
+        description: Joi.string().min(10).required(),
+        owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+        image: Joi.string().required()
+  }),
 
     userSchema: Joi.object().keys({
         firstName: Joi.string().min(2).required(),

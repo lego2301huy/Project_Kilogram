@@ -1,0 +1,27 @@
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+
+const PostSchema = new Schema({
+    description: {
+        type: String
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        unique: true
+    },
+    image: {
+      type: String
+    },
+    comment: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Comment'
+    }],
+    like: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Like'
+    }]
+})
+
+const Post = mongoose.model('Post', PostSchema)
+module.exports = Post
