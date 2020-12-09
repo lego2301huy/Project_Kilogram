@@ -71,6 +71,11 @@ const schemas = {
         owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
     }),
 
+    newLikeSchema: Joi.object().keys({
+      userLiked: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+      postIsLiked: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+    }),
+
     newPostSchema: Joi.object().keys({
         description: Joi.string().min(10).required(),
         owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),

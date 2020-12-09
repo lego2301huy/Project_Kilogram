@@ -32,4 +32,11 @@ router.route('/:userID/posts')
 .get(validateParam(schemas.idSchema, 'userID'), UserController.getUserPosts)
 .post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.postSchema), UserController.newUserPost)
 
+router.route('/:userID/:postID/likes')
+    .get(validateParam(schemas.idSchema, 'userID'), validateParam(schemas.idSchema, 'postID'), UserController.getUserDecks)
+
+router.route('./:userID/:postID/Comments')
+    .get(validateParam(schemas.idSchema, 'userID'), validateParam(schemas.idSchema, 'postID'), UserController.getUserDecks)
+
+
 module.exports = router

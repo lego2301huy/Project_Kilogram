@@ -11,15 +11,15 @@ const PostSchema = new Schema({
         unique: true
     },
     image: {
-      type: String
+        type: String
     },
-    comment: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Comment'
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
     }],
-    like: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Like'
+    likes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Like'
     }]
 })
 
