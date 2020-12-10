@@ -4,7 +4,7 @@ const User = require('../models/User')
 const deletePost = async (req, res, next) => {
     const { postID } = req.value.params
 
-    // Get a deck
+    // Get a post
     const post = await Post.findById(postID)
     const ownerID = post.owner
 
@@ -22,7 +22,7 @@ const deletePost = async (req, res, next) => {
 }
 
 const getPost = async (req, res, next) => {
-    const post = await Post.findById(req.value.params.deckID)
+    const post = await Post.findById(req.value.params.postID)
 
     return res.status(200).json({post})
 }

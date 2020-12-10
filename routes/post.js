@@ -8,12 +8,12 @@ const { validateBody, validateParam, schemas } = require('../helpers/routerHelpe
 
 router.route('/')
     .get(PostController.index)
-    .post(validateBody(schemas.newPostSchema), PostController.newDeck)
+    .post(validateBody(schemas.newPostSchema), PostController.newPost)
 
 router.route('/:postID')
-    .get(validateParam(schemas.idSchema, 'postID'), DeckController.getDeck)
-    .put(validateParam(schemas.idSchema, 'postID'), validateBody(schemas.newDeckSchema), DeckController.replaceDeck)
-    .patch(validateParam(schemas.idSchema, 'postID'), validateBody(schemas.deckOptionalSchema), DeckController.updateDeck)
-    .delete(validateParam(schemas.idSchema, 'postID'), DeckController.deleteDeck)
+    .get(validateParam(schemas.idSchema, 'postID'), PostController.getPost)
+    .put(validateParam(schemas.idSchema, 'postID'), validateBody(schemas.newPostSchema), PostController.replacePost)
+    .patch(validateParam(schemas.idSchema, 'postID'), validateBody(schemas.postOptionalSchema), PostController.updatePost)
+    .delete(validateParam(schemas.idSchema, 'postID'), PostController.deletePost)
 
 module.exports = router

@@ -20,6 +20,9 @@ mongoClient
 
 const app = express();
 
+const deckPost = require("./routes/post");
+// const deckComment = require("./routes/comment");
+// const deckLike = require("./routes/like");
 const deckRoute = require("./routes/deck");
 const userRoute = require("./routes/user");
 
@@ -30,6 +33,11 @@ app.use(bodyParser.json());
 // Routes
 app.use("/decks", deckRoute);
 app.use("/users", userRoute);
+app.use("/posts", deckPost);
+// app.user("/likes", deckLike);
+// app.user("/comments", deckComment);
+
+
 
 // Routes
 app.get("/", (req, res, next) => {

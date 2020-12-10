@@ -22,9 +22,13 @@ const encodedToken = (userID) => {
 }
 
 const getUser = async (req, res, next) => {
-  const { userID } = req.value.params;
+  const { userID } = req.value.params; 
 
-  const user = await User.findById(userID);
+  // find user
+  // const user = await User.findById(userID);
+
+  // get  informations of user
+  const user = await User.findById(userID).populate("posts");
 
   return res.status(200).json({ user });
 };
@@ -108,7 +112,7 @@ const newUserPost = async (req, res, next) => {
   // Save the user
   await user.save();
   
-  res.status(201).json({ deck: newPost });
+  res.status(201).json({ post: newPost });
 };
 
 const replaceUser = async (req, res, next) => {

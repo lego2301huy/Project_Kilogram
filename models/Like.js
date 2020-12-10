@@ -13,5 +13,5 @@ const LikeSchema = new Schema({
     }
 })
 
-const Like = mongoose.model('Like', DeckSchema)
+const Like = mongoose.model('Like', LikeSchema)
 module.exports = Like

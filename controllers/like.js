@@ -62,5 +62,5 @@ module.exports = {
     deleteLike,
     getLike,
     index,
-    newDeck,
+    newLike,
 }
