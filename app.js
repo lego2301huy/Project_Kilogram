@@ -22,7 +22,7 @@ const app = express();
 
 const deckPost = require("./routes/post");
 // const deckComment = require("./routes/comment");
-// const deckLike = require("./routes/like");
+const deckLike = require("./routes/like");
 const deckRoute = require("./routes/deck");
 const userRoute = require("./routes/user");
 
@@ -34,8 +34,8 @@ app.use(bodyParser.json());
 app.use("/decks", deckRoute);
 app.use("/users", userRoute);
 app.use("/posts", deckPost);
-// app.user("/likes", deckLike);
-// app.user("/comments", deckComment);
+app.use("/likes", deckLike);
+// app.use("/comments", deckComment);
 
 
 

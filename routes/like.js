@@ -12,6 +12,6 @@ router.route('/')
 
 router.route('/:likeID')
     .get(validateParam(schemas.idSchema, 'likeID'), LikeController.getLike)
-    .delete(validateParam(schemas.idSchema, 'likeID'), LikeController.deleteDeck)
+    .delete(validateParam(schemas.idSchema, 'likeID'), LikeController.deleteLike)
 
 module.exports = router

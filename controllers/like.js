@@ -34,16 +34,16 @@ const getLike = async (req, res, next) => {
 // get all likes in database
 const index = async (req, res, next) => {
     const likes = await Like.find({})
-
     return res.status(200).json({likes})
 }
 
 // create a like 
 const newLike = async (req, res, next) => {
-   // Find post had this like
-   const post = await Post.findById(req.value.body.postIsLiked)
-
-   // Create a new like
+    console.log("call create like function")
+    // Find post had this like
+    const post = await Post.findById(req.value.body.postIsLiked)
+    console.log("Found post had this id", post._id) 
+    // Create a new like
     const like = req.value.body
     delete like.owner
 
