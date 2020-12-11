@@ -19,6 +19,8 @@ router.route('/signin').post(validateBody(schemas.authSignInSchema), passport.au
 
 router.route('/secret').get(passport.authenticate('jwt', { session: false}), UserController.secret)
 
+router.route('/search').get(validateBody(schemas.searchSchema), UserController.searchUsers)
+
 router.route('/:userID')
     .get(validateParam(schemas.idSchema, 'userID'), UserController.getUser)
     .put(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userSchema), UserController.replaceUser)

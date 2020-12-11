@@ -57,6 +57,21 @@ const index = async (req, res, next) => {
   return res.status(200).json({ users });
 };
 
+const searchUsers = async (req, res, next) => {
+  const { userName } = req.value.body
+  console.log("calling search  function");
+  const foundUsers = await User.find({lastName: { $regex: userName}})
+  const foundLastName = []
+  foundUsers.forEach(user => {
+    found = {}
+    found._id = user._id
+    found.lastName = user.lastName
+    return foundLastName.push(found)
+  });
+  // console.log({searchedName: foundLastName})
+  res.status(200).json({found: foundLastName})
+}
+
 const newUser = async (req, res, next) => {
   const newUser = new User(req.value.body);
 
@@ -181,5 +196,6 @@ module.exports = {
   signUp,
   updateUser,
   newUserPost,
-  getUserPosts
+  getUserPosts,
+  searchUsers
 };

@@ -45,6 +45,10 @@ const schemas = {
         password: Joi.string().min(6).required(),
     }),
 
+    searchSchema: Joi.object().keys({
+        userName: Joi.string()
+    }),
+
     deckSchema: Joi.object().keys({
         name: Joi.string().min(6).required(),
         description: Joi.string().min(10).required()
