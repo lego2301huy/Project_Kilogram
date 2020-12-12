@@ -12,6 +12,7 @@ const Post = require("../models/Post")
 const { JWT_SECRET } = require('../configs')
 const JWT = require('jsonwebtoken')
 
+// Create Token
 const encodedToken = (userID) => {
   return JWT.sign({
     iss: 'Le Anh Huy',
@@ -21,6 +22,7 @@ const encodedToken = (userID) => {
   }, JWT_SECRET)
 }
 
+// get a user
 const getUser = async (req, res, next) => {
   const { userID } = req.value.params; 
 
@@ -42,6 +44,7 @@ const getUserDecks = async (req, res, next) => {
   return res.status(200).json({ decks: user.decks });
 };
 
+// get all posts of user
 const getUserPosts = async (req, res, next) => {
   const { userID } = req.value.params;
 
@@ -51,27 +54,47 @@ const getUserPosts = async (req, res, next) => {
   return res.status(200).json({ posts: user.posts });
 };
 
+// get all users
 const index = async (req, res, next) => {
   const users = await User.find({});
 
   return res.status(200).json({ users });
 };
 
+// search Users
 const searchUsers = async (req, res, next) => {
   const { userName } = req.value.body
-  console.log("calling search  function");
-  const foundUsers = await User.find({lastName: { $regex: userName}})
-  const foundLastName = []
-  foundUsers.forEach(user => {
-    found = {}
-    found._id = user._id
-    found.lastName = user.lastName
-    return foundLastName.push(found)
-  });
-  // console.log({searchedName: foundLastName})
-  res.status(200).json({found: foundLastName})
+  
+  var page = req.value.query.page
+  if(page) {
+    page = parseInt(page)
+    console.log("page: ", page)
+    const pageSize = 4
+    var skip = (page - 1)*pageSize
+    const foundUsers = await User.find({lastName: { $regex: userName}}).skip(skip).limit(pageSize)
+    const foundLastName = []
+    foundUsers.forEach(user => {
+      found = {}
+      found._id = user._id
+      found.lastName = user.lastName
+      foundLastName.push(found)
+    });
+    return res.status(200).json({found: foundLastName})
+  }
+  else{
+    const foundUsers = await User.find({lastName: { $regex: userName}})
+    const foundLastName = []
+    foundUsers.forEach(user => {
+      found = {}
+      found._id = user._id
+      found.lastName = user.lastName
+      foundLastName.push(found)
+    });
+    return res.status(200).json({found: foundLastName})
+  }
 }
 
+// create User
 const newUser = async (req, res, next) => {
   const newUser = new User(req.value.body);
 
@@ -102,7 +125,7 @@ const newUserDeck = async (req, res, next) => {
   // Save the user
   await user.save();
   
-  res.status(201).json({ deck: newDeck });
+  return res.status(201).json({ deck: newDeck });
 };
 
 const newUserPost = async (req, res, next) => {
@@ -127,7 +150,7 @@ const newUserPost = async (req, res, next) => {
   // Save the user
   await user.save();
   
-  res.status(201).json({ post: newPost });
+  return res.status(201).json({ post: newPost });
 };
 
 const replaceUser = async (req, res, next) => {
@@ -150,9 +173,9 @@ const signIn = async (req, res, next) => {
   // Encode a token
   console.log('req: ', req.user)
   const token = encodedToken(req.user._id)
-
+  const ID = req.user._id
   res.setHeader('Authorization', token)
-  return res.status(201).json({ success: true })
+  return res.status(201).json({ _id: ID })
 };
 
 const signUp = async (req, res, next) => {

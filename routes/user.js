@@ -4,7 +4,7 @@ const router = require('express-promise-router')()
 
 const UserController = require('../controllers/user')
 
-const { validateBody, validateParam, schemas } = require('../helpers/routerHelpers')
+const { validateBody, validateParam, ValidateQuery, schemas } = require('../helpers/routerHelpers')
 
 const passport = require('passport')
 const passportConfig = require('../middlewares/passport')
@@ -19,7 +19,7 @@ router.route('/signin').post(validateBody(schemas.authSignInSchema), passport.au
 
 router.route('/secret').get(passport.authenticate('jwt', { session: false}), UserController.secret)
 
-router.route('/search').get(validateBody(schemas.searchSchema), UserController.searchUsers)
+router.route('/search').get(validateBody(schemas.searchSchema), ValidateQuery(schemas.searchQuerySchema, 'page'), UserController.searchUsers)
 
 router.route('/:userID')
     .get(validateParam(schemas.idSchema, 'userID'), UserController.getUser)
