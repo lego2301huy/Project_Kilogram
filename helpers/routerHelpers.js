@@ -57,7 +57,7 @@ const schemas = {
 
   authSignUpSchema: Joi.object().keys({
     avatar: Joi.string(),
-    userName: Joi.string().regex(/^[0-9a-zA-Z]{3,30}$/).required(),
+    userName: Joi.string().regex(/^[0-9a-zA-Z]{3,30}$/),
     firstName: Joi.string().min(2).required(),
     lastName: Joi.string().min(2).required(),
     email: Joi.string().email().required(),
