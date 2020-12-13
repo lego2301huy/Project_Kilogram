@@ -173,6 +173,7 @@ const signIn = async (req, res, next) => {
   const token = encodedToken(req.user._id)
   const ID = req.user._id
   res.setHeader('Authorization', token)
+  console.log("calling sign in function")
   return res.status(201).json({ _id: ID })
 };
 
@@ -191,7 +192,7 @@ const signUp = async (req, res, next) => {
   const token = encodedToken(newUser._id)
 
   res.setHeader('Authorization', token)
-  return res.status(201).json({ success: true })
+  return res.status(201).json({ _id: newUser._id })
 };
 
 const updateUser = async (req, res, next) => {

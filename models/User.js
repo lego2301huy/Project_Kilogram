@@ -5,7 +5,8 @@ const bcrypt = require('bcryptjs')
 
 const UserSchema = new Schema({
   avatar: {
-    type: String
+    type: String,
+    default: ""
   },
   firstName: {
     type: String
