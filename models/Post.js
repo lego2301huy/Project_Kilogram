@@ -10,6 +10,14 @@ const PostSchema = new Schema({
         ref: 'User',
         unique: true
     },
+    totalLike: {
+        type: Number,
+        default: 0
+    },
+    totalComment: {
+        type: Number,
+        default: 0
+    },
     image: {
         type: String
     },

@@ -31,7 +31,7 @@ router.route('/:userID/decks')
     .post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.deckSchema), UserController.newUserDeck)
 
 router.route('/:userID/posts')
-.get(validateParam(schemas.idSchema, 'userID'), UserController.getUserPosts)
+.get(validateParam(schemas.idSchema, 'userID'), ValidateQuery(schemas.searchQuerySchema, 'page'), UserController.getUserPosts)
 .post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.postSchema), UserController.newUserPost)
 
 router.route('/:userID/:postID/likes')

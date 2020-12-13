@@ -1,9 +1,3 @@
-/**
- * We can interact with mongoose in three diffirent ways:
- * [v] Callback
- * [v] Promises
- * [v] Async/await (Promises)
- */
 
 const Deck = require("../models/Deck");
 const User = require("../models/User");
@@ -44,13 +38,19 @@ const getUserDecks = async (req, res, next) => {
   return res.status(200).json({ decks: user.decks });
 };
 
-// get all posts of user
+// get all posts of user / page
 const getUserPosts = async (req, res, next) => {
   const { userID } = req.value.params;
-
+  var page = req.value.query.page
+  if(page) {
+    page = parseInt(page)
+    const pageSize = 10
+    var skip = (page - 1)*pageSize
+    const users = await User.findById(userID).populate("posts").skip(skip).limit(pageSize)
+    return res.status(200).json({ posts: users.posts });
+  }
   // Get user
   const user = await User.findById(userID).populate("posts");
-
   return res.status(200).json({ posts: user.posts });
 };
 
@@ -61,14 +61,12 @@ const index = async (req, res, next) => {
   return res.status(200).json({ users });
 };
 
-// search Users
+// search Users / page
 const searchUsers = async (req, res, next) => {
   const { userName } = req.value.body
-  
   var page = req.value.query.page
   if(page) {
     page = parseInt(page)
-    console.log("page: ", page)
     const pageSize = 4
     var skip = (page - 1)*pageSize
     const foundUsers = await User.find({lastName: { $regex: userName}}).skip(skip).limit(pageSize)
@@ -79,19 +77,19 @@ const searchUsers = async (req, res, next) => {
       found.lastName = user.lastName
       foundLastName.push(found)
     });
-    return res.status(200).json({found: foundLastName})
+    //return foundLastName;
+    return res.status(200).json({found: foundLastName});
   }
-  else{
-    const foundUsers = await User.find({lastName: { $regex: userName}})
-    const foundLastName = []
-    foundUsers.forEach(user => {
-      found = {}
-      found._id = user._id
-      found.lastName = user.lastName
-      foundLastName.push(found)
-    });
-    return res.status(200).json({found: foundLastName})
-  }
+  const foundUsers = await User.find({lastName: { $regex: userName}})
+  console.log(foundUsers)
+  const foundLastName = []
+  foundUsers.forEach(user => {
+    found = {}
+    found._id = user._id
+    found.lastName = user.lastName
+    foundLastName.push(found)
+  });
+  return res.status(200).json({found: foundLastName})
 }
 
 // create User

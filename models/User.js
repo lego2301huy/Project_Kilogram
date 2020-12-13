@@ -4,33 +4,36 @@ const Schema = mongoose.Schema
 const bcrypt = require('bcryptjs')
 
 const UserSchema = new Schema({
-    firstName: {
-        type: String
-    },
-    lastName: {
-        type: String
-    },
-    userName: {
-        type: String
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    decks: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Deck'
-    }],
-    posts: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Post'
-    }]
+  avatar: {
+    type: String
+  },
+  firstName: {
+    type: String
+  },
+  lastName: {
+    type: String
+  },
+  userName: {
+    type: String
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  decks: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Deck'
+  }],
+  posts: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
+  }]
 })
 
 UserSchema.methods.isValidPassword = async function(newPassword) {
