@@ -56,6 +56,8 @@ const schemas = {
   }),
 
   authSignUpSchema: Joi.object().keys({
+    avatar: Joi.string(),
+    userName: Joi.string().regex(/^[0-9a-zA-Z]{3,30}$/).required(),
     firstName: Joi.string().min(2).required(),
     lastName: Joi.string().min(2).required(),
     email: Joi.string().email().required(),
@@ -83,7 +85,7 @@ const schemas = {
   deckOptionalSchema: Joi.object().keys({
     name: Joi.string().min(6),
     description: Joi.string().min(10),
-    owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/)
+    owner: Joi.string().regex(/^[a-f0-9A-F]{24}$/)
   }),
 
   idSchema: Joi.object().keys({

@@ -177,14 +177,14 @@ const signIn = async (req, res, next) => {
 };
 
 const signUp = async (req, res, next) => {
-  const { firstName, lastName, email, password } = req.value.body
+  const { firstName, lastName, email, password, avatar, userName } = req.value.body
 
   // Check if there is a user with the same user
   const foundUser = await User.findOne({ email })
   if (foundUser) return res.status(403).json({ error: { message: 'Email is already in use.' }})
 
   // Create a new user
-  const newUser = new User({ firstName, lastName, email, password })
+  const newUser = new User({ firstName, lastName, email, password, avatar, userName })
   newUser.save() 
 
   // Encode a token
