@@ -29,13 +29,14 @@ passport.use(new LocalStrategy({
 },async (email, password, done) =>{
  try {
   const user = await User.findOne({ email })
-  const checkUser = "User is not created"
-  if(!user) return done(checkUser, false)
+  var localError = new Error('Email is not created, please sign up.')
+  if(!user) return done(localError, false)
+
   console.log('password are requested: ', password)
   const isCorrectPassword = await user.isValidPassword(password)
-  const checkPassword = "password is wrong"
-  if(!isCorrectPassword) return done(checkPassword, false)
-  
+  localError = new Error('wrong password.')
+  if(!isCorrectPassword) return done(localError, false)
+
   done(null, user)
  } catch (error) {
    done(error, false)
