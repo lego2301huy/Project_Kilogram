@@ -28,7 +28,8 @@ const userRoute = require("./routes/user");
 
 // Middlewares
 app.use(logger("dev"));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // Routes
 app.use("/decks", deckRoute);

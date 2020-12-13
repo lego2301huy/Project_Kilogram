@@ -1,4 +1,4 @@
-
+const bcrypt = require('bcryptjs')
 const Deck = require("../models/Deck");
 const User = require("../models/User");
 const Post = require("../models/Post")
@@ -142,10 +142,9 @@ const newUserPost = async (req, res, next) => {
   // Save the deck
   await newPost.save();
   
-  // Add deck to user's decks array 'decks'
   user.posts.push(newPost._id);
 
-  // Save the user
+  // update the user
   await user.save();
   
   return res.status(201).json({ post: newPost });
@@ -168,6 +167,7 @@ const secret = async (req, res, next) => {
 };
 
 const signIn = async (req, res, next) => {
+  
   // Encode a token
   console.log('req: ', req.user)
   const token = encodedToken(req.user._id)
@@ -178,12 +178,22 @@ const signIn = async (req, res, next) => {
 };
 
 const signUp = async (req, res, next) => {
-  const { firstName, lastName, email, password, avatar, userName } = req.value.body
-
+  var { firstName, lastName, email, password, avatar, userName } = req.value.body
+ 
   // Check if there is a user with the same user
   const foundUser = await User.findOne({ email })
   if (foundUser) return res.status(403).json({ error: { message: 'Email is already in use.' }})
 
+  //Generate a salt
+  console.log('password :', password)
+  const salt = await bcrypt.genSalt(10)
+  console.log('salt ', salt)
+  //Generate a password hash
+  const hashedPassword = await bcrypt.hash(password, salt)
+  console.log('password hashed: ', hashedPassword)
+  //Re-assign password hashed
+  password = hashedPassword
+  
   // Create a new user
   const newUser = new User({ firstName, lastName, email, password, avatar, userName })
   newUser.save() 

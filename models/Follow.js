@@ -7,16 +7,22 @@ const FollowsSchema = new Schema({
         ref: 'User',
         unique: true
     },
-    follower: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        unique: true
+    totalFollower: {
+        type: Number,
+        default: 0
     },
-    following: {
+    totalFollwing: {
+        type: Number,
+        default: 0
+    },
+    followers: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
-        unique: true
-    }
+    }],
+    followings: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }]
 })
 
 const Follows = mongoose.model('Follow', FollowsSchema)

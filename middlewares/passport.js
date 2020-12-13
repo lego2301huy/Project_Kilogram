@@ -34,6 +34,7 @@ passport.use(new LocalStrategy({
 
   console.log('password are requested: ', password)
   const isCorrectPassword = await user.isValidPassword(password)
+  console.log(isCorrectPassword)
   localError = new Error('wrong password.')
   if(!isCorrectPassword) return done(localError, false)
 

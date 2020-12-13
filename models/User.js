@@ -35,33 +35,40 @@ const UserSchema = new Schema({
   posts: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
-  }]
+  }],
+  follow: {
+    type: Schema.Types.ObjectId,
+    ref: 'Follow'
+  }
 })
 
 UserSchema.methods.isValidPassword = async function(newPassword) {
   try {
+    console.log("validatePassword: ", newPassword)
+    console.log("hashedPassword: ", this.password);
+    
     return await bcrypt.compare(newPassword, this.password)
   } catch (error) {
     throw new Error(error)
   }
 }
 
-UserSchema.pre('save', async function (next) {
-  try {
-    //Generate a salt
-    // console.log('password :', this.password)
-    const salt = await bcrypt.genSalt(10)
-    // console.log('salt ', salt)
+// UserSchema.pre('save', async function (next) {
+//   try {
 
-    //Generate a password hash
-    const hashedPassword = await bcrypt.hash(this.password, salt)
-    // console.log('password hashed: ', hashedPassword)
-    //Re-assign password hashed
-    this.password = hashedPassword
-  } catch (error) {
-    next(error)
-  }
-})
+//     //Generate a salt
+//     console.log('password :', this.password)
+//     const salt = await bcrypt.genSalt(10)
+//     // console.log('salt ', salt)
+//     //Generate a password hash
+//     const hashedPassword = await bcrypt.hash(this.password, salt)
+//     console.log('password hashed: ', hashedPassword)
+//     //Re-assign password hashed
+//     this.password = hashedPassword
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 const User = mongoose.model('User', UserSchema)
 module.exports = User
