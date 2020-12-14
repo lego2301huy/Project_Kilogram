@@ -17,7 +17,7 @@ const deleteDeck = async (req, res, next) => {
     // Remove deck from owner's decks list
     owner.decks.pull(deck)
     await owner.save()
-
+    
     return res.status(200).json({ success: true })
 }
 
