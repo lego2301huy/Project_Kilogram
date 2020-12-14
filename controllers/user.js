@@ -44,7 +44,7 @@ const getUserPosts = async (req, res, next) => {
   var page = req.value.query.page
   if(page) {
     page = parseInt(page)
-    const pageSize = 10
+    const pageSize = 12
     var skip = (page - 1)*pageSize
 
     const posts = await Post.find({owner: userID}).skip(skip).limit(pageSize)

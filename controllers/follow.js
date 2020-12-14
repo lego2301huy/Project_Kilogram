@@ -24,7 +24,7 @@ const newFollow = async (req, res, next) => {
   if(!followForFollwingUser._id){
     followForFollwingUser = new Follow()
   } 
-
+  
   followForFollwingUser.owner = followingUser._id
   followForFollwingUser.followings.push(following)
   console.log(followForFollwingUser)
