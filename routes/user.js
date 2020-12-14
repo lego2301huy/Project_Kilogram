@@ -4,10 +4,13 @@ const router = require('express-promise-router')()
 
 const UserController = require('../controllers/user')
 
+const FollowController = require('../controllers/follow')
+
 const { validateBody, validateParam, ValidateQuery, schemas } = require('../helpers/routerHelpers')
 
 const passport = require('passport')
 const passportConfig = require('../middlewares/passport')
+
 
 router.route('/')
     .get(UserController.index)
@@ -40,6 +43,16 @@ router.route('/:userID/:postID/likes')
 
 router.route('./:userID/:postID/Comments')
     .get(validateParam(schemas.idSchema, 'userID'), validateParam(schemas.idSchema, 'postID'), UserController.getUserDecks)
+
+router.route('/:userID/follow').get(validateParam(schemas.idSchema, 'userID'), FollowController.getFollow)
+
+router.route('/:userID/follower')
+    .get(validateParam(schemas.idSchema, 'userID'), FollowController.getFollower) // get all follower and follwing of a user (:userID)
+    .post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userFollowSchema), FollowController.newFollow) //  (:userID) follow someone
+
+router.route('/:userID/following')
+    .get(FollowController.getFollowing)
+    .delete(FollowController.deleteFollow) // (:userID) unfollow someone
 
 
 module.exports = router

@@ -43,7 +43,6 @@ const ValidateQuery = (schema, queryString) => {
       if (!req.value['query']) req.value.query = {}
 
       req.value.query[queryString] = req.query[queryString]
-      console.log(req.value)
       next()
     }
   }
@@ -64,12 +63,16 @@ const schemas = {
     password: Joi.string().min(6).required(),
   }),
 
+  userFollowSchema: Joi.object().keys({
+    following: Joi.string().regex(/^[a-f0-9A-F]{24}$/)
+  }),
+
   searchSchema: Joi.object().keys({
     userName: Joi.string()
   }),
 
   searchQuerySchema: Joi.object().keys({
-    page: Joi.string().regex(/^[1-9]$/)
+    page: Joi.string().regex(/^[0-9]{1,100}$/)
   }),
   
   deckSchema: Joi.object().keys({
