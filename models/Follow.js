@@ -11,7 +11,7 @@ const FollowsSchema = new Schema({
         type: Number,
         default: 0
     },
-    totalFollwing: {
+    totalFollowing: {
         type: Number,
         default: 0
     },

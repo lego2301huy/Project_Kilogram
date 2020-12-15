@@ -43,6 +43,12 @@ const newFollow = async (req, res, next) => {
   followForFollwedUser.followers.push(userID)
   followedUser.follow = followForFollwedUser._id
 
+  // var totalFollowers = followForFollwedUser.totalFollower
+  // totalFollowers = totalFollowers + 1;
+  ++followForFollwedUser.totalFollower
+  ++followForFollwingUser.totalFollowing
+  console.log("Follow: ", followForFollwingUser.totalFollowing);
+  console.log("Followed: ", followForFollwedUser.totalFollower);
   followingUser.save()
   followedUser.save()
 

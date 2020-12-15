@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const bcrypt = require('bcryptjs')
+const { number } = require('@hapi/joi')
 
 const UserSchema = new Schema({
   avatar: {
@@ -32,6 +33,10 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Deck'
   }],
+  totalPosts: {
+    type: Number,
+    default: 0
+  },
   posts: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
