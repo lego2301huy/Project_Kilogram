@@ -48,7 +48,7 @@ const getUserPosts = async (req, res, next) => {
     var skip = (page - 1)*pageSize
 
     const posts = await Post.find({owner: userID}).skip(skip).limit(pageSize)
-    console.log(posts);
+    // console.log(posts);
     return res.status(200).json({ posts: posts });
   }
   // Get user
@@ -139,8 +139,6 @@ const newUserPost = async (req, res, next) => {
  
   // Assign user as a deck's owner
   newPost.owner = user;
-  // console.log(newPost.owner)
-  console.log(newPost)
   // Save the deck
 
   ++user.totalPosts
