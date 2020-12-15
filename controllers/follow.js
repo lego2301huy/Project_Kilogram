@@ -94,8 +94,14 @@ const deleteFollow = async (req, res, next) => {
   followForFollwedUser.followers.pull(followingUser._id)
   followForFollwingUser.followings.pull(followedUser._id)
 
-  console.log(followForFollwedUser)
-  console.log(followForFollwingUser)
+  --followForFollwedUser.totalFollower
+  --followForFollwingUser.totalFollowing
+
+  // console.log("follow: ", followForFollwedUser.totalFollower);
+  // console.log("following: ", followForFollwingUser.totalFollowing);
+
+  // console.log(followForFollwedUser)
+  // console.log(followForFollwingUser)
   followForFollwingUser.save()
   followForFollwedUser.save()
 
