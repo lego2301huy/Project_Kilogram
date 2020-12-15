@@ -149,7 +149,7 @@ const newUserPost = async (req, res, next) => {
   // update the user
   await user.save();
   
-  return res.status(201).json({ post: newPost });
+  return res.status(201).json({ success: true });
 };
 
 const replaceUser = async (req, res, next) => {

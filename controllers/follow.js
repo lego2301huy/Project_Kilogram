@@ -16,10 +16,9 @@ const newFollow = async (req, res, next) => {
   // Get user
   const followingUser = await User.findById(userID)
   const followedUser = await User.findById(following)
-  // console.log(followingUser)
-  // console.log(followedUser)
+
   var followForFollwingUser = await Follow.findOne({owner: userID});
-  console.log(followForFollwingUser);
+  
   if(!followForFollwingUser){
     console.log("calling create new follow model")
     followForFollwingUser = new Follow()
@@ -28,12 +27,11 @@ const newFollow = async (req, res, next) => {
   const foundFollowingUser = followForFollwingUser.followings.find(followingID => {
     return followingID == following
   })
-  // console.log(foundFollowingUser)
+  
   if(foundFollowingUser) return res.status(200).json({ status: "you followed this user" });
 
   followForFollwingUser.owner = followingUser._id
   followForFollwingUser.followings.push(following)
-  // console.log(followForFollwingUser)
   followingUser.follow = followForFollwingUser._id
 
   var followForFollwedUser = await Follow.findOne({owner: following});
@@ -43,7 +41,6 @@ const newFollow = async (req, res, next) => {
 
   followForFollwedUser.owner = followedUser._id
   followForFollwedUser.followers.push(userID)
-  // console.log(followForFollwedUser)
   followedUser.follow = followForFollwedUser._id
 
   followingUser.save()
@@ -51,7 +48,6 @@ const newFollow = async (req, res, next) => {
 
   followForFollwedUser.save()
   followForFollwingUser.save()
-  console.log("calling end point")
   return res.status(200).json({ success: true });
 }
 
