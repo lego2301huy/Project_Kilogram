@@ -14,6 +14,8 @@ const deletePost = async (req, res, next) => {
     // Remove the deck
     await post.remove()
 
+    --owner.totalPosts
+
     // Remove deck from owner's decks list
     owner.posts.pull(post)
     await owner.save()
@@ -45,6 +47,7 @@ const newPost = async (req, res, next) => {
     const newPost = new Post(post)
     await newPost.save()
 
+    ++owner.totalPosts
     // Add newly created deck to the actual decks
     owner.posts.push(newPost._id)
     await owner.save()

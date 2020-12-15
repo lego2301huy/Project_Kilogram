@@ -142,6 +142,9 @@ const newUserPost = async (req, res, next) => {
   // console.log(newPost.owner)
   console.log(newPost)
   // Save the deck
+
+  ++user.totalPosts
+
   await newPost.save();
   
   user.posts.push(newPost._id);
